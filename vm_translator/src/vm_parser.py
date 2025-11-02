@@ -18,7 +18,6 @@ class Parser:
           continue
         else:
           command = self._parse_line(line)
-          command.print()
           clean_file.append(command)
       return clean_file
 
