@@ -6,7 +6,8 @@ class AssemblyExpressions:
     MemorySegment.ARG: 'ARG',
     MemorySegment.LCL: 'LCL',
     MemorySegment.THIS: 'THIS',
-    MemorySegment.THAT: 'THAT'
+    MemorySegment.THAT: 'THAT',
+    MemorySegment.TEMP: '5'
   }
 
   @staticmethod

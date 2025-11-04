@@ -32,18 +32,24 @@ class VMTranslator:
   def _translate_arithmetic_command(command: Command) -> List[str]:
     if command.is_add():
       return ["@SP", "A=M-1", "D=M", "A=A-1", "M=D+M", "@SP", "M=M-1"]
+    elif command.is_sub():
+      return ["@SP", "A=M-1", "D=M", "A=A-1", "M=M-D", "@SP", "M=M-1"]
 
     return list(str(command))
 
-  @staticmethod
-  def _translate_push_command(command: Command) -> List[str]:
+  def _translate_push_command(self, command: Command) -> List[str]:
     if command.is_constant_segment():
       return [f'@{command.arg2}', "D=A", "@SP", "A=M", "M=D", "@SP", "M=M+1"]
+    if command.is_common_segment() or command.is_temp_segment():
+      segment = self.assembly_expressions.segment(command.arg1)
+      value = "M" if command.is_common_segment() else 'A'
+      return [f"@{segment}", f"D={value}", f"@{command.arg2}", "A=D+A", "D=M", "@SP", "M=M+1", "A=M-1", "M=D"]
     return list(str(command))
 
   def _translate_pop_command(self, command: Command) -> list[str]:
-    if command.is_common_segment():
+    if command.is_common_segment() or command.is_temp_segment():
       segment = self.assembly_expressions.segment(command.arg1)
-      return [f"@{segment}", "D=M", f"@{command.arg2}", "D=D+A", "@SP", "M=M-1", "A=M+1", "M=D", "A=A-1", "D=M",
+      value = "M" if command.is_common_segment() else 'A'
+      return [f"@{segment}", f"D={value}", f"@{command.arg2}", "D=D+A", "@SP", "M=M-1", "A=M+1", "M=D", "A=A-1", "D=M",
               "A=A+1", "A=M", "M=D"]
     return list(str(command))

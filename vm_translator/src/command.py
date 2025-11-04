@@ -37,6 +37,9 @@ class Command:
   def is_add(self):
     return self.arg1 == ArithmeticCommandTypes.ADD
 
+  def is_sub(self):
+    return self.arg1 == ArithmeticCommandTypes.SUB
+
   def is_push(self):
     return self.command_type == CommandType.PUSH
 
@@ -51,3 +54,6 @@ class Command:
     Returns true if the segment is {local, arg, this, that}. This is useful  for translation.
     """
     return self.arg1 == MemorySegment.LCL or self.arg1 == MemorySegment.ARG or self.arg1 == MemorySegment.THIS or self.arg1 == MemorySegment.THAT
+
+  def is_temp_segment(self):
+    return self.arg1 == MemorySegment.TEMP
