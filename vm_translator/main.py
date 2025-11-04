@@ -52,12 +52,17 @@ def main():
   translate(input_path, output_path)
 
 
+def get_file_name(input_path: Path):
+  return input_path.name.split(".")[0]
+
+
 def translate(input_path: Path, output_path):
   print("Starting the Translation")
+  file_name = get_file_name(input_path)
   parser = Parser(input_path)
   parsed_file = parser.parse()
   translator = VMTranslator()
-  translation = translator.translate(parsed_file)
+  translation = translator.translate(parsed_file, file_name)
   code_writer = CodeWriter(output_file=output_path)
   code_writer.write_file(translation)
 

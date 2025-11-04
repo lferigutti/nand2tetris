@@ -57,3 +57,6 @@ class Command:
 
   def is_temp_segment(self):
     return self.arg1 == MemorySegment.TEMP
+
+  def is_static_segment(self):
+    return self.arg1 == MemorySegment.STATIC

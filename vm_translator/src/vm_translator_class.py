@@ -2,29 +2,28 @@ from typing import List
 
 from vm_translator.src.command import Command
 from vm_translator.src.assembly_expressions import AssemblyExpressions
-from vm_translator.src.models import CommandType
 
 
 class VMTranslator:
   assembly_expressions = AssemblyExpressions()
 
-  def translate(self, commands: List[Command], write_comment: bool = True) -> List[str]:
+  def translate(self, commands: List[Command], file_name: str = "", write_comment: bool = True) -> List[str]:
     output = []
     for command in commands:
       if write_comment:
         comment = f"// {str(command)}"
         output.append(comment)
-      command_translated = self._translate_command(command)
+      command_translated = self._translate_command(command, file_name)
       output.extend(command_translated)
     return output
 
-  def _translate_command(self, command: Command) -> List[str]:
+  def _translate_command(self, command: Command, file_name) -> List[str]:
     if command.is_arithmetic():
       return self._translate_arithmetic_command(command)
     elif command.is_push():
-      return self._translate_push_command(command)
+      return self._translate_push_command(command, file_name)
     elif command.is_pop():
-      return self._translate_pop_command(command)
+      return self._translate_pop_command(command, file_name)
     else:
       raise NotImplemented(f"Command {command.command_type} not implemented yet.")
 
@@ -37,19 +36,24 @@ class VMTranslator:
 
     return list(str(command))
 
-  def _translate_push_command(self, command: Command) -> List[str]:
+  def _translate_push_command(self, command: Command, file_name: str) -> List[str]:
     if command.is_constant_segment():
       return [f'@{command.arg2}', "D=A", "@SP", "A=M", "M=D", "@SP", "M=M+1"]
-    if command.is_common_segment() or command.is_temp_segment():
+    elif command.is_common_segment() or command.is_temp_segment():
       segment = self.assembly_expressions.segment(command.arg1)
       value = "M" if command.is_common_segment() else 'A'
       return [f"@{segment}", f"D={value}", f"@{command.arg2}", "A=D+A", "D=M", "@SP", "M=M+1", "A=M-1", "M=D"]
+    elif command.is_static_segment():
+      return [f"@{file_name}.{command.arg2}", "D=M", "@SP", "M=M+1", "A=M-1", "M=D"]
     return list(str(command))
 
-  def _translate_pop_command(self, command: Command) -> list[str]:
+  def _translate_pop_command(self, command: Command, file_name: str) -> list[str]:
     if command.is_common_segment() or command.is_temp_segment():
       segment = self.assembly_expressions.segment(command.arg1)
       value = "M" if command.is_common_segment() else 'A'
       return [f"@{segment}", f"D={value}", f"@{command.arg2}", "D=D+A", "@SP", "M=M-1", "A=M+1", "M=D", "A=A-1", "D=M",
+              "A=A+1", "A=M", "M=D"]
+    elif command.is_static_segment():
+      return [f"@{file_name}.{command.arg2}", "D=A", "@SP", "M=M-1", "A=M+1", "M=D", "A=A-1", "D=M",
               "A=A+1", "A=M", "M=D"]
     return list(str(command))
