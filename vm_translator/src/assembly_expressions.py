@@ -19,3 +19,8 @@ class AssemblyExpressions:
     if not segment:
       raise SyntaxError(f"The segment {segment} does not exist")
     return segment
+
+  def get_pointer_mapping(self, value: int):
+    if value != 1 and value != 0:
+      raise SyntaxError(f"Pointer can be only 0 or 1. You supplied {value}")
+    return self.segment_strings_mapping.get(MemorySegment.THAT if value else MemorySegment.THIS)

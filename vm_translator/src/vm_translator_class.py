@@ -33,8 +33,8 @@ class VMTranslator:
       return ["@SP", "A=M-1", "D=M", "A=A-1", "M=D+M", "@SP", "M=M-1"]
     elif command.is_sub():
       return ["@SP", "A=M-1", "D=M", "A=A-1", "M=M-D", "@SP", "M=M-1"]
-
-    return list(str(command))
+    else:
+      raise SyntaxError(f"Arithmetic Command '{str(command)}' is not valid. Arg {command.arg1} does not exist.")
 
   def _translate_push_command(self, command: Command, file_name: str) -> List[str]:
     if command.is_constant_segment():
@@ -45,7 +45,11 @@ class VMTranslator:
       return [f"@{segment}", f"D={value}", f"@{command.arg2}", "A=D+A", "D=M", "@SP", "M=M+1", "A=M-1", "M=D"]
     elif command.is_static_segment():
       return [f"@{file_name}.{command.arg2}", "D=M", "@SP", "M=M+1", "A=M-1", "M=D"]
-    return list(str(command))
+    elif command.is_pointer_segment():
+      segment = self.assembly_expressions.get_pointer_mapping(command.arg2)
+      return [f"@{segment}", "D=M", "@SP", "M=M+1", "A=M-1", "M=D"]
+    else:
+      raise SyntaxError(f"Push Command '{str(command)}' is not valid. Segment {command.arg1} does not exist.")
 
   def _translate_pop_command(self, command: Command, file_name: str) -> list[str]:
     if command.is_common_segment() or command.is_temp_segment():
@@ -56,4 +60,8 @@ class VMTranslator:
     elif command.is_static_segment():
       return [f"@{file_name}.{command.arg2}", "D=A", "@SP", "M=M-1", "A=M+1", "M=D", "A=A-1", "D=M",
               "A=A+1", "A=M", "M=D"]
-    return list(str(command))
+    elif command.is_pointer_segment():
+      segment = self.assembly_expressions.get_pointer_mapping(command.arg2)
+      return ["@SP", "AM=M-1", "D=M", f"@{segment}", "M=D"]
+    else:
+      raise SyntaxError(f"Pop Command '{str(command)}' is not valid. Segment {command.arg1} does not exist.")
