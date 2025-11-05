@@ -69,7 +69,7 @@ class VMTranslator:
     else:
       raise SyntaxError(f"Push Command '{str(command)}' is not valid. Segment {command.arg1} does not exist.")
 
-  def _translate_pop_command(self, command: Command) -> list[str]:
+  def _translate_pop_command(self, command: Command) -> List[str]:
     if command.is_common_segment() or command.is_temp_segment():
       segment = self.assembly_expressions.segment(command.arg1)
       value = "M" if command.is_common_segment() else 'A'

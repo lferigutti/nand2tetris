@@ -1,12 +1,13 @@
-from vm_translator.src.models import CommandType, ArithmeticCommandTypes, MemoryCommand, MemorySegment
+from vm_translator.src.models import CommandType, ArithmeticCommandTypes, MemorySegment
+from typing import Union
 
 
 class Command:
   def __init__(
       self,
       command_type: CommandType,
-      arg1: ArithmeticCommandTypes | MemorySegment,
-      arg2: None | int = None
+      arg1: Union[ArithmeticCommandTypes, MemorySegment],
+      arg2: Union[None, int] = None
   ):
     self.command_type = command_type
     self.arg1 = arg1
