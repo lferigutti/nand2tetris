@@ -40,6 +40,15 @@ class Command:
   def is_sub(self):
     return self.arg1 == ArithmeticCommandTypes.SUB
 
+  def is_eq_lt_gt(self):
+    return self.arg1 == ArithmeticCommandTypes.EQ or self.arg1 == ArithmeticCommandTypes.LT or self.arg1 == ArithmeticCommandTypes.GT
+
+  def is_not_neg(self):
+    return self.arg1 == ArithmeticCommandTypes.NOT or self.arg1 == ArithmeticCommandTypes.NEG
+
+  def is_and_or(self):
+    return self.arg1 == ArithmeticCommandTypes.AND or self.arg1 == ArithmeticCommandTypes.OR
+
   def is_push(self):
     return self.command_type == CommandType.PUSH
 

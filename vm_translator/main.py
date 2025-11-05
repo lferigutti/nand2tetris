@@ -61,8 +61,8 @@ def translate(input_path: Path, output_path):
   file_name = get_file_name(input_path)
   parser = Parser(input_path)
   parsed_file = parser.parse()
-  translator = VMTranslator()
-  translation = translator.translate(parsed_file, file_name)
+  translator = VMTranslator(file_name=file_name)
+  translation = translator.translate(parsed_file)
   code_writer = CodeWriter(output_file=output_path)
   code_writer.write_file(translation)
 
