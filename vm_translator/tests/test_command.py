@@ -74,7 +74,7 @@ class TestCommand(unittest.TestCase):
     repr_str = repr(cmd)
     self.assertIn("Command", repr_str)
     self.assertIn("CommandType.PUSH", repr_str)
-    self.assertIn("MemorySymbol.CONSTANT", repr_str)
+    self.assertIn("MemorySegment.CONSTANT", repr_str)
     self.assertIn("7", repr_str)
 
   def test_eq_same_commands(self):
