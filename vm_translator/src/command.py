@@ -1,4 +1,4 @@
-from vm_translator.src.models import CommandType, ArithmeticCommandTypes, MemorySegment
+from vm_translator.src.models import CommandType, ArithmeticCommandTypes, MemorySegment, BranchingCommand
 from typing import Union
 
 
@@ -6,8 +6,8 @@ class Command:
   def __init__(
       self,
       command_type: CommandType,
-      arg1: Union[ArithmeticCommandTypes, MemorySegment],
-      arg2: Union[None, int] = None
+      arg1: Union[ArithmeticCommandTypes, MemorySegment, BranchingCommand, str, None],
+      arg2: Union[None, int, str] = None
   ):
     self.command_type = command_type
     self.arg1 = arg1
@@ -15,9 +15,10 @@ class Command:
 
   def __str__(self):
     parts = []
-    if self.command_type != CommandType.ARITHMETIC:
+    if self.command_type != CommandType.ARITHMETIC and self.command_type != CommandType.BRANCHING:
       parts.append(self.command_type.value)
-    parts.append(self.arg1.value)
+    if self.command_type != CommandType.RETURN:
+      parts.append(self.arg1.value if not isinstance(self.arg1, str) else self.arg1)
     if self.arg2 is not None:
       parts.append(str(self.arg2))
     return ' '.join(parts)
@@ -34,6 +35,18 @@ class Command:
 
   def is_arithmetic(self):
     return self.command_type == CommandType.ARITHMETIC
+
+  def is_branching(self):
+    return self.command_type == CommandType.BRANCHING
+
+  def is_function(self):
+    return self.command_type == CommandType.FUNCTION
+
+  def is_return(self):
+    return self.command_type == CommandType.RETURN
+
+  def is_call(self):
+    return self.command_type == CommandType.CALL
 
   def is_add(self):
     return self.arg1 == ArithmeticCommandTypes.ADD

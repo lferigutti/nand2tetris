@@ -1,6 +1,16 @@
 from enum import Enum
 
 
+class CommandType(Enum):
+  ARITHMETIC = "arithmetic"
+  PUSH = 'push'
+  POP = 'pop'
+  BRANCHING = 'branching'
+  FUNCTION = 'function'
+  CALL = 'call'
+  RETURN = 'return'
+
+
 class ArithmeticCommandTypes(Enum):
   ADD = 'add'
   SUB = 'sub'
@@ -18,10 +28,10 @@ class MemoryCommand(Enum):
   POP = 'pop'
 
 
-class CommandType(Enum):
-  ARITHMETIC = "arithmetic"
-  PUSH = 'push'
-  POP = 'pop'
+class BranchingCommand(Enum):
+  LABEL = 'label'
+  GOTO = 'goto'
+  IF_GOTO = 'if-goto'
 
 
 class MemorySegment(Enum):

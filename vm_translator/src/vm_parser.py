@@ -1,5 +1,5 @@
 from vm_translator.src.command import Command
-from vm_translator.src.models import CommandType, ArithmeticCommandTypes, MemoryCommand, MemorySegment
+from vm_translator.src.models import CommandType, ArithmeticCommandTypes, MemoryCommand, MemorySegment, BranchingCommand
 from typing import List
 from pathlib import Path
 
@@ -25,22 +25,49 @@ class Parser:
     args = line.split(" ")
     if len(args) == 1:
       try:
+        if args[0] == CommandType.RETURN.value:
+          return Command(
+            command_type=CommandType.RETURN,
+            arg1=None
+          )
         return Command(
           command_type=CommandType.ARITHMETIC,
           arg1=ArithmeticCommandTypes(args[0])
         )
       except Exception as e:
         raise SyntaxError(f"Invalid VM command syntax. Error: {e}")
+    elif len(args) == 2:
+      try:
+        return Command(
+          command_type=CommandType.BRANCHING,
+          arg1=BranchingCommand(args[0]),
+          arg2=args[1],
+        )
+      except Exception as e:
+        raise SyntaxError(f"Invalid VM command syntax. Error: {e}")
     elif len(args) == 3:
       try:
-        command_type = self._get_memory_type(args[0])
-        arg1 = MemorySegment(args[1])
-        arg2 = int(args[2])
-        return Command(
-          command_type=command_type,
-          arg1=arg1,
-          arg2=arg2
-        )
+        if args[0] == CommandType.FUNCTION.value:
+          return Command(
+            command_type=CommandType.FUNCTION,
+            arg1=args[1],
+            arg2=int(args[2])
+          )
+        elif args[0] == CommandType.CALL.value:
+          return Command(
+            command_type=CommandType.CALL,
+            arg1=args[1],
+            arg2=int(args[2])
+          )
+        else:
+          command_type = self._get_memory_type(args[0])
+          arg1 = MemorySegment(args[1])
+          arg2 = int(args[2])
+          return Command(
+            command_type=command_type,
+            arg1=arg1,
+            arg2=arg2
+          )
       except Exception as e:
         raise SyntaxError(f"Invalid VM command syntax. Error: {e}")
     else:
