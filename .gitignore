@@ -208,3 +208,4 @@ __marimo__/
 
 # Mac Releted FIles
 .DS_Store
+.zed/

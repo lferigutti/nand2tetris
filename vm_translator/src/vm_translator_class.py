@@ -2,6 +2,7 @@ from typing import List
 
 from vm_translator.src.command import Command
 from vm_translator.src.assembly_expressions import AssemblyExpressions
+from vm_translator.src.models import BranchingCommand
 
 
 class VMTranslator:
@@ -28,6 +29,8 @@ class VMTranslator:
       return self._translate_push_command(command)
     elif command.is_pop():
       return self._translate_pop_command(command)
+    elif command.is_branching():
+      return self._translate_branching_commands(command)
     else:
       raise NotImplemented(f"Command {command.command_type} not implemented yet.")
 
@@ -83,3 +86,14 @@ class VMTranslator:
       return ["@SP", "AM=M-1", "D=M", f"@{segment}", "M=D"]
     else:
       raise SyntaxError(f"Pop Command '{str(command)}' is not valid. Segment {command.arg1} does not exist.")
+
+  def _translate_branching_commands(self, command: Command) -> List[str]:
+    label = f"{command.arg2}.{self.file_name}"
+    if command.arg1 == BranchingCommand.LABEL:
+      return [f"({label})"]
+    elif command.arg1 == BranchingCommand.GOTO:
+      return [f"@{label}", "0;JMP"]
+    elif command.arg1 == BranchingCommand.IF_GOTO:
+      return ["@SP", "AM=M-1", "D=M", f"@{label}", "D;JNE"]
+    else:
+      raise SyntaxError(f"Branching Command '{str(command)}' is not valid.")

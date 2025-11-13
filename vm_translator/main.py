@@ -2,7 +2,9 @@
 """
 VM Translator - Translates VM code to Hack assembly language
 """
+
 import argparse
+import os
 import sys
 from pathlib import Path
 
@@ -11,31 +13,64 @@ from vm_translator.src.vm_parser import Parser
 from vm_translator.src.vm_translator_class import VMTranslator
 
 
+def load_env_file(env_path=".env"):
+  """Load environment variables from .env file"""
+  if not os.path.exists(env_path):
+    return
+
+  with open(env_path, "r") as f:
+    for line in f:
+      line = line.strip()
+      # Skip empty lines and comments
+      if not line or line.startswith("#"):
+        continue
+      # Parse KEY=VALUE
+      if "=" in line:
+        key, value = line.split("=", 1)
+        os.environ[key.strip()] = value.strip()
+
+
 def main():
   """Main entry point for the VM translator"""
+  # Load .env file for local debugging
+  # load_env_file("/Users/leonardoferigutti/Documents/nand2Tetris/nand2tetris/vm_translator/.env")
+
   parser = argparse.ArgumentParser(
-    description='Translate VM code to Hack assembly language'
+    description="Translate VM code to Hack assembly language"
   )
 
   parser.add_argument(
-    'input',
+    "input",
     type=str,
-    help='Input .vm file or directory containing .vm files'
+    nargs="?",
+    help="Input .vm file or directory containing .vm files",
+    default=None,
   )
 
   parser.add_argument(
-    '-o', '--output',
+    "-o",
+    "--output",
     type=str,
-    help='Output .asm file (default: input filename with .asm extension)',
-    default=None
+    help="Output .asm file (default: input filename with .asm extension)",
+    default=None,
   )
 
   args = parser.parse_args()
 
-  # Validate input path exists
-  input_path = Path(args.input)
+  # Use input argument or fall back to INPUT_PATH environment variable
+  input_str = args.input or os.getenv("INPUT_PATH")
+  print(input_str)
+
+  if not input_str:
+    print(
+      "Error: No input provided. Use argument or set INPUT_PATH environment variable",
+      file=sys.stderr,
+    )
+    sys.exit(1)
+
+  input_path = Path(input_str)
   if not input_path.exists():
-    print(f"Error: Input path '{args.input}' does not exist", file=sys.stderr)
+    print(f"Error: Input path '{input_str}' does not exist", file=sys.stderr)
     sys.exit(1)
 
   # Determine output path
@@ -43,7 +78,7 @@ def main():
     output_path = Path(args.output)
   else:
     if input_path.is_file():
-      output_path = input_path.with_suffix('.asm')
+      output_path = input_path.with_suffix(".asm")
     else:
       output_path = input_path / f"{input_path.name}.asm"
 
@@ -57,7 +92,6 @@ def get_file_name(input_path: Path):
 
 
 def translate(input_path: Path, output_path):
-  print("Starting the Translation")
   file_name = get_file_name(input_path)
   parser = Parser(input_path)
   parsed_file = parser.parse()
@@ -67,5 +101,5 @@ def translate(input_path: Path, output_path):
   code_writer.write_file(translation)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
   main()

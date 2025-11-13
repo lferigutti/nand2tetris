@@ -2,7 +2,6 @@ import unittest
 import tempfile
 from pathlib import Path
 from vm_translator.src.vm_parser import Parser
-from vm_translator.src.command import Command
 from vm_translator.src.models import CommandType, ArithmeticCommandTypes, MemorySegment, BranchingCommand
 
 
@@ -19,6 +18,17 @@ class TestParser(unittest.TestCase):
     with open(file_path, 'w') as f:
       f.write(content)
     return file_path
+
+  def test_parse_comment_in_line(self):
+    """Test parsing a line with an inline comment"""
+    file_path = self._create_test_file("push constant 10 // push 10 onto stack\n")
+    parser = Parser(file_path)
+    commands = parser.parse()
+
+    self.assertEqual(len(commands), 1)
+    self.assertEqual(commands[0].command_type, CommandType.PUSH)
+    self.assertEqual(commands[0].arg1, MemorySegment.CONSTANT)
+    self.assertEqual(commands[0].arg2, 10)
 
   def test_parse_arithmetic_command(self):
     """Test parsing a single arithmetic command"""
@@ -99,8 +109,8 @@ class TestParser(unittest.TestCase):
 
   def test_strip_whitespace(self):
     """Test that leading/trailing whitespace is handled"""
-    content = """  push constant 7  
-      add  
+    content = """  push constant 7
+      add
     """
     file_path = self._create_test_file(content)
     parser = Parser(file_path)

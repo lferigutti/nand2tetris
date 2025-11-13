@@ -16,6 +16,10 @@ class Parser:
         line = line.strip()
         if not line or line.startswith("//"):
           continue
+        elif '//' in line:
+          line = line.split("//")[0].strip()
+          command = self._parse_line(line)
+          clean_file.append(command)
         else:
           command = self._parse_line(line)
           clean_file.append(command)
