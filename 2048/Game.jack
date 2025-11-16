@@ -1,0 +1,122 @@
+class Game {
+  field Board board; // Board of the game itself
+  field int size; // Size of the board. Hardcoded by now
+
+  constructor Game new() {
+    let size = 4;
+    let board = Board.new(size);
+
+    return this;
+  }
+
+  /** Here is the logic of the game **/
+  method void run() {
+    do draw();
+    return;
+  }
+
+  /** This method is in charge of undestanding where to draw and what to draw.**/
+  method void draw() {
+    var Array dummy;
+    let dummy = Array.new(4);
+    let dummy[0] = 8;
+    let dummy[1] = 2;
+    let dummy[2] = 0;
+    let dummy[3] = 64;
+
+
+    do Output.moveCursor(6, 20);
+    do Output.printString("+-----+-----+-----+-----+");
+    do drawRow(dummy, 7, 20);
+    do Output.moveCursor(8, 20);
+    do Output.printString("+-----+-----+-----+-----+");
+
+    do Output.moveCursor(9, 20);
+    do Output.printString("|  4  |     |  8  |  2  |");
+
+    do Output.moveCursor(10, 20);
+    do Output.printString("+-----+-----+-----+-----+");
+
+    do Output.moveCursor(11, 20);
+    do Output.printString("|  4  |     |  8  |  2  |");
+
+    do Output.moveCursor(12, 20);
+    do Output.printString("+-----+-----+-----+-----+");
+
+    do Output.moveCursor(13, 20);
+    do Output.printString("|  4  |     |  8  |  2  |");
+
+    do Output.moveCursor(14, 20);
+    do Output.printString("+-----+-----+-----+-----+");
+    return;
+  }
+
+  /** This method draws only one row **/
+  method void drawRow(Array row, int screenRow, int screenCol) {
+    var int col, value;
+    var String cellStr;
+
+    do Output.moveCursor(screenRow, screenCol);
+    do Output.printString("|");
+    let col = 0;
+    while (col < size) {
+      let value = row[col];
+      let cellStr = getCellString(value);
+
+      do Output.printString(cellStr);
+      do cellStr.dispose();
+      do Output.printString("|");
+      
+      let col = col + 1;
+    }
+    return;
+  }
+
+
+  /* Returs a tile from a value -> it is tedius but follows the limitaiton of jack language */
+  method String getCellString(int value) {
+
+    if (value = 0) {
+      return "     ";
+    }
+    if (value = 2) {
+      return "  2  ";
+    }
+    if (value = 4) {
+      return "  4  ";
+    }
+    if (value = 8) {
+      return "  8  ";
+    }
+    if (value = 16) {
+      return " 16  ";
+    }
+    if (value = 32) {
+      return " 32  ";
+    }
+    if (value = 64) {
+      return " 64  ";
+    }
+    if (value = 128) {
+      return " 128 ";
+    }
+    if (value = 256) {
+      return " 256 ";
+    }  
+    if (value = 512) {
+      return " 512 ";
+    }
+    if (value = 1024) {
+      return "1024 ";
+    }  
+    if (value = 2048) {
+      return "2048 ";
+    }
+    return "     ";
+  }
+
+
+
+}
+
+

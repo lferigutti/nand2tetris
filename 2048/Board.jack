@@ -1,0 +1,19 @@
+class Board {
+  field Array board; // Array that would represent the board
+  field int size; // Size of the square board usually 4x4
+
+  constructor Board new (int boardSize) {
+    var int i;
+    let size = boardSize;
+    let board = Array.new(boardSize);
+
+    // Create each row
+    let i = 0;
+    while (i < size) {
+      let board[i] = Array.new(size);
+      let i = i + 1;
+    }
+    return this;
+  }
+
+}

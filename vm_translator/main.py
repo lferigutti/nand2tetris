@@ -102,7 +102,7 @@ def translate(input_path: Path, output_path):
     files = [input_path]
 
   translation = []
-  if len(files) >= 1:
+  if len(files) > 1:
     translator_init = VMTranslator()
     translation.extend(translator_init.get_bootstrap_code())
   for file in files:
