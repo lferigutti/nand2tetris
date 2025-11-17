@@ -32,3 +32,107 @@ label Board_0
 label Board_1
     push pointer 0
     return
+function Board.getRow 0
+    push argument 0
+    pop pointer 0
+    push argument 1
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    return
+function Board.get 1
+    push argument 0
+    pop pointer 0
+    push argument 1
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    pop local 0
+    push argument 2
+    push local 0
+    add
+    pop pointer 1
+    push that 0
+    return
+function Board.set 1
+    push argument 0
+    pop pointer 0
+    push argument 1
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    pop local 0
+    push argument 2
+    push local 0
+    add
+    push argument 3
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push constant 0
+    return
+function Board.initTestData 0
+    push argument 0
+    pop pointer 0
+    push pointer 0
+    push constant 0
+    push constant 0
+    push constant 2
+    call Board.set 4
+    pop temp 0
+    push pointer 0
+    push constant 0
+    push constant 1
+    push constant 4
+    call Board.set 4
+    pop temp 0
+    push pointer 0
+    push constant 0
+    push constant 2
+    push constant 8
+    call Board.set 4
+    pop temp 0
+    push pointer 0
+    push constant 0
+    push constant 3
+    push constant 16
+    call Board.set 4
+    pop temp 0
+    push constant 0
+    return
+function Board.dispose 1
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 0
+label Board_2
+    push local 0
+    push this 1
+    lt
+    not
+    if-goto Board_3
+    push local 0
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    call Memory.deAlloc 1
+    pop temp 0
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Board_2
+label Board_3
+    push this 0
+    call Memory.deAlloc 1
+    pop temp 0
+    push pointer 0
+    call Memory.deAlloc 1
+    pop temp 0
+    push constant 0
+    return

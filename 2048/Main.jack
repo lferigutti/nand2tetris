@@ -2,7 +2,8 @@ class Main {
   function void main() {
     var Game game;
     let game = Game.new();
-    do game.draw();
+    do game.run();
+    do game.dispose();
     return;
   }
 }

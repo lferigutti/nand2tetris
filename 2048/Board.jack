@@ -7,13 +7,45 @@ class Board {
     let size = boardSize;
     let board = Array.new(boardSize);
 
-    // Create each row
+    // Create each row (all elements automatically initialized to 0)
     let i = 0;
     while (i < size) {
       let board[i] = Array.new(size);
       let i = i + 1;
     }
+
     return this;
+  }
+
+  method Array getRow(int rowIndex) {
+    return board[rowIndex];
+  }
+
+  method int get(int row, int col) {
+    var Array rowArray;
+    let rowArray = board[row];
+    return rowArray[col];
+  }
+
+  method void set(int row, int col, int value) {
+    var Array rowArray;
+    let rowArray = board[row];
+    let rowArray[col] = value;
+    return;
+  }
+
+
+  /** Disposes this board */
+  method void dispose() {
+    var int i;
+    let i = 0;
+    while (i < size) {
+      do Memory.deAlloc(board[i]);
+      let i = i + 1;
+    }
+    do Memory.deAlloc(board);
+    do Memory.deAlloc(this);
+    return;
   }
 
 }

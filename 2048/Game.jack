@@ -1,58 +1,48 @@
 class Game {
   field Board board; // Board of the game itself
   field int size; // Size of the board. Hardcoded by now
+  field int initScreenRow, initScreenCol; // Initical position of the board in the screen
 
   constructor Game new() {
     let size = 4;
     let board = Board.new(size);
-
+    let initScreenRow = 6;
+    let initScreenCol = 20;
     return this;
   }
 
-  /** Here is the logic of the game **/
+  /* Here is the logic of the game */
   method void run() {
     do draw();
     return;
   }
 
-  /** This method is in charge of undestanding where to draw and what to draw.**/
+  /* This method is in charge of undestanding where to draw and what to draw. */
   method void draw() {
-    var Array dummy;
-    let dummy = Array.new(4);
-    let dummy[0] = 8;
-    let dummy[1] = 2;
-    let dummy[2] = 0;
-    let dummy[3] = 64;
+    var int rowIndex;
+    var int screenRow, screenCol;
+    
+    let rowIndex = 0;
+    let screenRow = initScreenRow;
+    let screenCol = initScreenCol;
 
-
-    do Output.moveCursor(6, 20);
-    do Output.printString("+-----+-----+-----+-----+");
-    do drawRow(dummy, 7, 20);
-    do Output.moveCursor(8, 20);
-    do Output.printString("+-----+-----+-----+-----+");
-
-    do Output.moveCursor(9, 20);
-    do Output.printString("|  4  |     |  8  |  2  |");
-
-    do Output.moveCursor(10, 20);
-    do Output.printString("+-----+-----+-----+-----+");
-
-    do Output.moveCursor(11, 20);
-    do Output.printString("|  4  |     |  8  |  2  |");
-
-    do Output.moveCursor(12, 20);
-    do Output.printString("+-----+-----+-----+-----+");
-
-    do Output.moveCursor(13, 20);
-    do Output.printString("|  4  |     |  8  |  2  |");
-
-    do Output.moveCursor(14, 20);
+    while (rowIndex < size) {
+      do Output.moveCursor(screenRow, screenCol);
+      do Output.printString("+-----+-----+-----+-----+");
+      let screenRow = screenRow + 1;
+      do drawRow(rowIndex, screenRow, screenCol);
+      let rowIndex = rowIndex + 1;
+      let screenRow = screenRow + 1;
+    }
+    
+    // Draw last line
+    do Output.moveCursor(screenRow, screenCol);
     do Output.printString("+-----+-----+-----+-----+");
     return;
   }
 
-  /** This method draws only one row **/
-  method void drawRow(Array row, int screenRow, int screenCol) {
+  /* This method draws only one row */
+  method void drawRow(int rowIndex, int screenRow, int screenCol) {
     var int col, value;
     var String cellStr;
 
@@ -60,11 +50,10 @@ class Game {
     do Output.printString("|");
     let col = 0;
     while (col < size) {
-      let value = row[col];
+      let value = board.get(rowIndex, col);
       let cellStr = getCellString(value);
 
       do Output.printString(cellStr);
-      do cellStr.dispose();
       do Output.printString("|");
       
       let col = col + 1;
@@ -115,7 +104,12 @@ class Game {
     return "     ";
   }
 
-
+  /** Disposes this game */
+  method void dispose() {
+    do board.dispose();
+    do Memory.deAlloc(this);
+    return;
+  }
 
 }
 

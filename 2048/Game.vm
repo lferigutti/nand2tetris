@@ -1,5 +1,5 @@
 function Game.new 0
-    push constant 2
+    push constant 4
     call Memory.alloc 1
     pop pointer 0
     push constant 4
@@ -7,6 +7,13 @@ function Game.new 0
     push this 1
     call Board.new 1
     pop this 0
+    push this 0
+    call Board.initTestData 1
+    pop temp 0
+    push constant 6
+    pop this 2
+    push constant 20
+    pop this 3
     push pointer 0
     return
 function Game.run 0
@@ -17,46 +24,23 @@ function Game.run 0
     pop temp 0
     push constant 0
     return
-function Game.draw 1
+function Game.draw 3
     push argument 0
     pop pointer 0
-    push constant 4
-    call Array.new 1
+    push constant 0
     pop local 0
-    push constant 0
+    push this 2
+    pop local 1
+    push this 3
+    pop local 2
+label Game_0
     push local 0
-    add
-    push constant 8
-    pop temp 0
-    pop pointer 1
-    push temp 0
-    pop that 0
-    push constant 1
-    push local 0
-    add
-    push constant 2
-    pop temp 0
-    pop pointer 1
-    push temp 0
-    pop that 0
-    push constant 2
-    push local 0
-    add
-    push constant 0
-    pop temp 0
-    pop pointer 1
-    push temp 0
-    pop that 0
-    push constant 3
-    push local 0
-    add
-    push constant 64
-    pop temp 0
-    pop pointer 1
-    push temp 0
-    pop that 0
-    push constant 6
-    push constant 20
+    push this 1
+    lt
+    not
+    if-goto Game_1
+    push local 1
+    push local 2
     call Output.moveCursor 2
     pop temp 0
     push constant 25
@@ -113,362 +97,28 @@ function Game.draw 1
     call String.appendChar 2
     call Output.printString 1
     pop temp 0
+    push local 1
+    push constant 1
+    add
+    pop local 1
     push pointer 0
     push local 0
-    push constant 7
-    push constant 20
+    push local 1
+    push local 2
     call Game.drawRow 4
     pop temp 0
-    push constant 8
-    push constant 20
-    call Output.moveCursor 2
-    pop temp 0
-    push constant 25
-    call String.new 1
-    push constant 43
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 43
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 43
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 43
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 43
-    call String.appendChar 2
-    call Output.printString 1
-    pop temp 0
-    push constant 9
-    push constant 20
-    call Output.moveCursor 2
-    pop temp 0
-    push constant 25
-    call String.new 1
-    push constant 124
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 52
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 124
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 124
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 56
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 124
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 50
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 124
-    call String.appendChar 2
-    call Output.printString 1
-    pop temp 0
-    push constant 10
-    push constant 20
-    call Output.moveCursor 2
-    pop temp 0
-    push constant 25
-    call String.new 1
-    push constant 43
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 43
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 43
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 43
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 43
-    call String.appendChar 2
-    call Output.printString 1
-    pop temp 0
-    push constant 11
-    push constant 20
-    call Output.moveCursor 2
-    pop temp 0
-    push constant 25
-    call String.new 1
-    push constant 124
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 52
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 124
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 124
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 56
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 124
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 50
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 124
-    call String.appendChar 2
-    call Output.printString 1
-    pop temp 0
-    push constant 12
-    push constant 20
-    call Output.moveCursor 2
-    pop temp 0
-    push constant 25
-    call String.new 1
-    push constant 43
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 43
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 43
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 43
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 45
-    call String.appendChar 2
-    push constant 43
-    call String.appendChar 2
-    call Output.printString 1
-    pop temp 0
-    push constant 13
-    push constant 20
-    call Output.moveCursor 2
-    pop temp 0
-    push constant 25
-    call String.new 1
-    push constant 124
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 52
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 124
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 124
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 56
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 124
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 50
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 124
-    call String.appendChar 2
-    call Output.printString 1
-    pop temp 0
-    push constant 14
-    push constant 20
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    push local 1
+    push constant 1
+    add
+    pop local 1
+    goto Game_0
+label Game_1
+    push local 1
+    push local 2
     call Output.moveCursor 2
     pop temp 0
     push constant 25
@@ -542,17 +192,16 @@ function Game.drawRow 3
     pop temp 0
     push constant 0
     pop local 0
-label Game_0
+label Game_2
     push local 0
     push this 1
     lt
     not
-    if-goto Game_1
-    push local 0
+    if-goto Game_3
+    push this 0
     push argument 1
-    add
-    pop pointer 1
-    push that 0
+    push local 0
+    call Board.get 3
     pop local 1
     push pointer 0
     push local 1
@@ -560,9 +209,6 @@ label Game_0
     pop local 2
     push local 2
     call Output.printString 1
-    pop temp 0
-    push local 2
-    call String.dispose 1
     pop temp 0
     push constant 1
     call String.new 1
@@ -574,8 +220,8 @@ label Game_0
     push constant 1
     add
     pop local 0
-    goto Game_0
-label Game_1
+    goto Game_2
+label Game_3
     push constant 0
     return
 function Game.getCellString 0
@@ -585,7 +231,7 @@ function Game.getCellString 0
     push constant 0
     eq
     not
-    if-goto Game_3
+    if-goto Game_5
     push constant 5
     call String.new 1
     push constant 32
@@ -599,14 +245,14 @@ function Game.getCellString 0
     push constant 32
     call String.appendChar 2
     return
-    goto Game_2
-label Game_3
-label Game_2
+    goto Game_4
+label Game_5
+label Game_4
     push argument 1
     push constant 2
     eq
     not
-    if-goto Game_5
+    if-goto Game_7
     push constant 5
     call String.new 1
     push constant 32
@@ -620,14 +266,14 @@ label Game_2
     push constant 32
     call String.appendChar 2
     return
-    goto Game_4
-label Game_5
-label Game_4
+    goto Game_6
+label Game_7
+label Game_6
     push argument 1
     push constant 4
     eq
     not
-    if-goto Game_7
+    if-goto Game_9
     push constant 5
     call String.new 1
     push constant 32
@@ -641,14 +287,14 @@ label Game_4
     push constant 32
     call String.appendChar 2
     return
-    goto Game_6
-label Game_7
-label Game_6
+    goto Game_8
+label Game_9
+label Game_8
     push argument 1
     push constant 8
     eq
     not
-    if-goto Game_9
+    if-goto Game_11
     push constant 5
     call String.new 1
     push constant 32
@@ -662,14 +308,14 @@ label Game_6
     push constant 32
     call String.appendChar 2
     return
-    goto Game_8
-label Game_9
-label Game_8
+    goto Game_10
+label Game_11
+label Game_10
     push argument 1
     push constant 16
     eq
     not
-    if-goto Game_11
+    if-goto Game_13
     push constant 5
     call String.new 1
     push constant 32
@@ -683,14 +329,14 @@ label Game_8
     push constant 32
     call String.appendChar 2
     return
-    goto Game_10
-label Game_11
-label Game_10
+    goto Game_12
+label Game_13
+label Game_12
     push argument 1
     push constant 32
     eq
     not
-    if-goto Game_13
+    if-goto Game_15
     push constant 5
     call String.new 1
     push constant 32
@@ -704,14 +350,14 @@ label Game_10
     push constant 32
     call String.appendChar 2
     return
-    goto Game_12
-label Game_13
-label Game_12
+    goto Game_14
+label Game_15
+label Game_14
     push argument 1
     push constant 64
     eq
     not
-    if-goto Game_15
+    if-goto Game_17
     push constant 5
     call String.new 1
     push constant 32
@@ -721,27 +367,6 @@ label Game_12
     push constant 52
     call String.appendChar 2
     push constant 32
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    return
-    goto Game_14
-label Game_15
-label Game_14
-    push argument 1
-    push constant 128
-    eq
-    not
-    if-goto Game_17
-    push constant 5
-    call String.new 1
-    push constant 32
-    call String.appendChar 2
-    push constant 49
-    call String.appendChar 2
-    push constant 50
-    call String.appendChar 2
-    push constant 56
     call String.appendChar 2
     push constant 32
     call String.appendChar 2
@@ -750,10 +375,31 @@ label Game_14
 label Game_17
 label Game_16
     push argument 1
-    push constant 256
+    push constant 128
     eq
     not
     if-goto Game_19
+    push constant 5
+    call String.new 1
+    push constant 32
+    call String.appendChar 2
+    push constant 49
+    call String.appendChar 2
+    push constant 50
+    call String.appendChar 2
+    push constant 56
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    return
+    goto Game_18
+label Game_19
+label Game_18
+    push argument 1
+    push constant 256
+    eq
+    not
+    if-goto Game_21
     push constant 5
     call String.new 1
     push constant 32
@@ -767,14 +413,14 @@ label Game_16
     push constant 32
     call String.appendChar 2
     return
-    goto Game_18
-label Game_19
-label Game_18
+    goto Game_20
+label Game_21
+label Game_20
     push argument 1
     push constant 512
     eq
     not
-    if-goto Game_21
+    if-goto Game_23
     push constant 5
     call String.new 1
     push constant 32
@@ -788,14 +434,14 @@ label Game_18
     push constant 32
     call String.appendChar 2
     return
-    goto Game_20
-label Game_21
-label Game_20
+    goto Game_22
+label Game_23
+label Game_22
     push argument 1
     push constant 1024
     eq
     not
-    if-goto Game_23
+    if-goto Game_25
     push constant 5
     call String.new 1
     push constant 49
@@ -809,14 +455,14 @@ label Game_20
     push constant 32
     call String.appendChar 2
     return
-    goto Game_22
-label Game_23
-label Game_22
+    goto Game_24
+label Game_25
+label Game_24
     push argument 1
     push constant 2048
     eq
     not
-    if-goto Game_25
+    if-goto Game_27
     push constant 5
     call String.new 1
     push constant 50
@@ -830,9 +476,9 @@ label Game_22
     push constant 32
     call String.appendChar 2
     return
-    goto Game_24
-label Game_25
-label Game_24
+    goto Game_26
+label Game_27
+label Game_26
     push constant 5
     call String.new 1
     push constant 32
@@ -845,4 +491,15 @@ label Game_24
     call String.appendChar 2
     push constant 32
     call String.appendChar 2
+    return
+function Game.dispose 0
+    push argument 0
+    pop pointer 0
+    push this 0
+    call Board.dispose 1
+    pop temp 0
+    push pointer 0
+    call Memory.deAlloc 1
+    pop temp 0
+    push constant 0
     return
