@@ -1,3 +1,6 @@
+/**
+ * Implement the Board. It is also handle all the internal logic, but has no clue about the game itself.
+ */
 class Board {
   field Array board; // Array that would represent the board
   field int size; // Size of the square board usually 4x4
@@ -37,6 +40,54 @@ class Board {
     return;
   }
 
+  method boolean hasValue(int target) {
+    var int row, col;
+    var Array rowArray;
+    let row = 0;
+    while (row < size) {
+      let rowArray = board[row];
+      let col = 0;
+      while (col < size) {
+        if (rowArray[col] = target) {
+          return true;
+        }
+        let col = col + 1;
+      }
+      let row = row + 1;
+    }
+    return false;
+  }
+
+  method boolean hasMoves() {
+    var int row, col, value;
+    var Array rowArray, nextRowArray;
+    let row = 0;
+    while (row < size) {
+      let rowArray = board[row];
+      let col = 0;
+      while (col < size) {
+        let value = rowArray[col];
+        if (value = 0) {
+          return true;
+        }
+        if ((col + 1) < size) {
+          if (value = rowArray[col + 1]) {
+            return true;
+          }
+        }
+        if ((row + 1) < size) {
+          let nextRowArray = board[row + 1];
+          if (value = nextRowArray[col]) {
+            return true;
+          }
+        }
+        let col = col + 1;
+      }
+      let row = row + 1;
+    }
+    return false;
+  }
+
   /* Simple pseudo-random number generator */
   method int random(int max) {
     let seed = (seed * 11312) + 12345;
@@ -67,12 +118,10 @@ class Board {
       let row = row + 1;
     }
     
-    // If no empty positions, return
     if (emptyCount = 0) {
       return;
     }
     
-    // Choose a random empty position
     let targetIndex = random(emptyCount);
     let currentIndex = 0;
     
@@ -95,8 +144,8 @@ class Board {
     return;
   }
 
-  /* This is the hear of moving, we are moving to the left always so we avoid copy pasting the method. Tricky part is to roteate/tilt the 
-    board when we want to move to another direction.
+  /** This is the hear of moving, we are moving to the left always so we avoid copy pasting the method. Tricky part is to roteate/tilt the 
+   * board when we want to move to another direction.
   */
   method boolean moveLeft() {
     var int row, col, targetCol, value;
