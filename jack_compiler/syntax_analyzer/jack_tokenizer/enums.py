@@ -1,7 +1,20 @@
-from enum import Enum
+from enum import Enum, EnumMeta
 
 
-class TokenType(Enum):
+class MetaEnum(EnumMeta):
+    def __contains__(cls, item):
+        try:
+            cls(item)
+        except ValueError:
+            return False
+        return True
+
+
+class BaseEnum(Enum, metaclass=MetaEnum):
+    pass
+
+
+class TokenType(BaseEnum):
     KEYWORD = 'keyword'
     SYMBOL = 'symbol'
     IDENTIFIER = 'identifier'
@@ -9,7 +22,7 @@ class TokenType(Enum):
     STRING_CONST = 'stringConstant'
 
 
-class Keyword(Enum):
+class Keyword(BaseEnum):
     CLASS = 'class'
     METHOD = 'method'
     FUNCTION = 'function'
@@ -33,7 +46,7 @@ class Keyword(Enum):
     THIS = 'this'
 
 
-class Symbol(Enum):
+class Symbol(BaseEnum):
     LEFT_BRACE = '{'
     RIGHT_BRACE = '}'
     LEFT_PAREN = '('
