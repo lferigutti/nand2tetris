@@ -13,6 +13,10 @@ class Token:
         self.value = value
         self.token_type = token_type
 
+    @property
+    def actual_value(self):
+        return self.value.value if not isinstance(self.value, (int, str)) else str(self.value)
+
 
 class JackTokenizer:
 
@@ -54,6 +58,7 @@ class JackTokenizer:
         self._move_to_next_valid_position()
         self._current_token = self._build_token()
 
+    @property
     def token_type(self) -> TokenType:
         if self._current_token is not None:
             return self._current_token.token_type
@@ -74,6 +79,14 @@ class JackTokenizer:
 
     def string_val(self) -> str:
         return str(self._return_token_value_or_raise(TokenType.STRING_CONST))
+
+    @property
+    def token_value(self) -> TokenValue:
+        """ More general method to avoid complicated proposed API """
+        if self._current_token is None:
+            raise ValueError("There is no current token available")
+
+        return self._current_token.value
 
     def _return_token_value_or_raise(self, token_type: TokenType) -> TokenValue:
         """ Factory function to avoid duplication"""

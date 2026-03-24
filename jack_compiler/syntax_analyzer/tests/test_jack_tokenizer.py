@@ -106,7 +106,7 @@ class TestJackTokenizerAPI(unittest.TestCase):
         tokenizer = JackTokenizer("class")
 
         with self.assertRaises(ValueError):
-            tokenizer.token_type()
+            tokenizer.token_type
 
     def test_keyword_raises_when_current_token_is_not_keyword(self):
         tokenizer = JackTokenizer("123")
@@ -124,7 +124,7 @@ class TestJackTokenizerAPI(unittest.TestCase):
         tokenizer = JackTokenizer("() pepe")
         tokenizer.advance()
 
-        self.assertEqual(tokenizer.token_type(), TokenType.SYMBOL)
+        self.assertEqual(tokenizer.token_type, TokenType.SYMBOL)
         self.assertEqual(tokenizer.symbol(), Symbol.LEFT_PAREN)
 
     def test_has_more_tokens_and_advance_final_symbol(self):
@@ -132,7 +132,7 @@ class TestJackTokenizerAPI(unittest.TestCase):
 
         self.assertTrue(tokenizer.has_more_tokens)
         tokenizer.advance()
-        self.assertEqual(tokenizer.token_type(), TokenType.SYMBOL)
+        self.assertEqual(tokenizer.token_type, TokenType.SYMBOL)
         self.assertEqual(tokenizer.symbol(), Symbol.SEMICOLON)
         self.assertFalse(tokenizer.has_more_tokens)
 
@@ -141,7 +141,7 @@ class TestJackTokenizerAPI(unittest.TestCase):
 
         self.assertTrue(tokenizer.has_more_tokens)
         tokenizer.advance()
-        self.assertEqual(tokenizer.token_type(), TokenType.INT_CONST)
+        self.assertEqual(tokenizer.token_type, TokenType.INT_CONST)
         self.assertEqual(tokenizer.int_val(), 7)
         self.assertFalse(tokenizer.has_more_tokens)
 
@@ -149,7 +149,7 @@ class TestJackTokenizerAPI(unittest.TestCase):
         tokenizer = JackTokenizer("2213 = 2 ")
         tokenizer.advance()
 
-        self.assertEqual(tokenizer.token_type(), TokenType.INT_CONST)
+        self.assertEqual(tokenizer.token_type, TokenType.INT_CONST)
         self.assertEqual(tokenizer.int_val(), 2213)
 
         tokenizer.advance()
@@ -162,52 +162,52 @@ class TestJackTokenizerAPI(unittest.TestCase):
         tokenizer = JackTokenizer('"Roberto" ')
         tokenizer.advance()
 
-        self.assertEqual(tokenizer.token_type(), TokenType.STRING_CONST)
+        self.assertEqual(tokenizer.token_type, TokenType.STRING_CONST)
         self.assertEqual(tokenizer.string_val(), "Roberto")
 
     def test_build_keyword_and_identifier(self):
         tokenizer = JackTokenizer("class main")
         tokenizer.advance()
 
-        self.assertEqual(tokenizer.token_type(), TokenType.KEYWORD)
+        self.assertEqual(tokenizer.token_type, TokenType.KEYWORD)
         self.assertEqual(tokenizer.keyword(), Keyword.CLASS)
 
         tokenizer.advance()
-        self.assertEqual(tokenizer.token_type(), TokenType.IDENTIFIER)
+        self.assertEqual(tokenizer.token_type, TokenType.IDENTIFIER)
         self.assertEqual(tokenizer.identifier(), "main")
 
     def test_advance_multiple_tokens_in_sequence(self):
         tokenizer = JackTokenizer("let count = 10;")
 
         tokenizer.advance()
-        self.assertEqual(tokenizer.token_type(), TokenType.KEYWORD)
+        self.assertEqual(tokenizer.token_type, TokenType.KEYWORD)
         self.assertEqual(tokenizer.keyword(), Keyword.LET)
 
         tokenizer.advance()
-        self.assertEqual(tokenizer.token_type(), TokenType.IDENTIFIER)
+        self.assertEqual(tokenizer.token_type, TokenType.IDENTIFIER)
         self.assertEqual(tokenizer.identifier(), "count")
 
         tokenizer.advance()
-        self.assertEqual(tokenizer.token_type(), TokenType.SYMBOL)
+        self.assertEqual(tokenizer.token_type, TokenType.SYMBOL)
         self.assertEqual(tokenizer.symbol(), Symbol.EQUAL)
 
         tokenizer.advance()
-        self.assertEqual(tokenizer.token_type(), TokenType.INT_CONST)
+        self.assertEqual(tokenizer.token_type, TokenType.INT_CONST)
         self.assertEqual(tokenizer.int_val(), 10)
 
         tokenizer.advance()
-        self.assertEqual(tokenizer.token_type(), TokenType.SYMBOL)
+        self.assertEqual(tokenizer.token_type, TokenType.SYMBOL)
         self.assertEqual(tokenizer.symbol(), Symbol.SEMICOLON)
 
     def test_advance_skips_comment_and_whitespace_before_tokens(self):
         tokenizer = JackTokenizer("// greeting\n   class Main")
 
         tokenizer.advance()
-        self.assertEqual(tokenizer.token_type(), TokenType.KEYWORD)
+        self.assertEqual(tokenizer.token_type, TokenType.KEYWORD)
         self.assertEqual(tokenizer.keyword(), Keyword.CLASS)
 
         tokenizer.advance()
-        self.assertEqual(tokenizer.token_type(), TokenType.IDENTIFIER)
+        self.assertEqual(tokenizer.token_type, TokenType.IDENTIFIER)
         self.assertEqual(tokenizer.identifier(), "Main")
 
 
