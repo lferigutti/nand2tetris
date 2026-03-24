@@ -1,9 +1,9 @@
 from pathlib import Path
 import sys
-from enum import Enum
 
 from jack_compiler.syntax_analyzer.jack_tokenizer.jack_tokenizer import JackTokenizer
 from jack_compiler.syntax_analyzer.xml_writer import XmlWriter
+from jack_compiler.syntax_analyzer.compilation_engine.compilation_engine import CompilationEngine
 
 
 class JackAnalyser:
@@ -36,8 +36,8 @@ class JackAnalyser:
     def _analyze(self, input_file_source: str, only_tokens: bool = False) -> str:
         if only_tokens:
             return self._analyze_only_tokens(input_file_source)
-
-        return ""
+        compilation_engine = CompilationEngine(input_file_source)
+        return compilation_engine.compile_class()
 
     @classmethod
     def _write_xml_output(
@@ -52,7 +52,7 @@ class JackAnalyser:
 
     @staticmethod
     def _get_output_path(input_file_path: Path, only_tokens: bool = False) -> Path:
-        suffix = "T-temp.xml" if only_tokens else ".xml"
+        suffix = "T.xml" if only_tokens else ".xml"
         return input_file_path.with_name(f"{input_file_path.stem}{suffix}")
 
     @staticmethod
@@ -64,11 +64,7 @@ class JackAnalyser:
         wr.open_tag("tokens")
         while tokenizer.has_more_tokens:
             tokenizer.advance()
-            token_value = tokenizer.token_value
-            if isinstance(token_value, Enum):
-                token_value = token_value.value
-
-            wr.leaf(tokenizer.token_type.value, str(token_value))
+            wr.leaf(tokenizer.token_type.value, str(tokenizer.normalized_token_value))
         wr.close_tag("tokens")
 
         return wr.render()

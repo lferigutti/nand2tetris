@@ -1,3 +1,4 @@
+from enum import Enum
 from typing import Optional, Union, cast
 from jack_compiler.syntax_analyzer.jack_tokenizer.enums import Symbol, TokenType, Keyword
 
@@ -13,9 +14,17 @@ class Token:
         self.value = value
         self.token_type = token_type
 
+    
     @property
-    def actual_value(self):
-        return self.value.value if not isinstance(self.value, (int, str)) else str(self.value)
+    def normalized_value(self)-> str | int:
+        return self._normalize_token_value()
+    
+    @property
+    def normalized_token_type(self) -> str:
+        return self.token_type.value
+
+    def _normalize_token_value(self) -> str | int:
+        return self.value.value if isinstance(self.value, Enum) else self.value
 
 
 class JackTokenizer:
@@ -87,6 +96,10 @@ class JackTokenizer:
             raise ValueError("There is no current token available")
 
         return self._current_token.value
+
+    @property
+    def normalized_token_value(self) -> str | int | None:
+        return self._current_token.normalized_value if self._current_token is not None else None
 
     def _return_token_value_or_raise(self, token_type: TokenType) -> TokenValue:
         """ Factory function to avoid duplication"""
